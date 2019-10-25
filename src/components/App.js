@@ -22,7 +22,7 @@ class App extends React.Component {
         const {videos} = this.props;
 
         return (
-            <div className='ui container' style={{marginTop: '1em',backgroundColor:'red', height: '100vh'}}>
+            <div className='ui container' style={{marginTop: '1em', height: '100vh'}}>
                 <div className='ui grid'>
                     <div className="ui row">
                         <div className="eleven wide column">
