@@ -1,51 +1,24 @@
-import React from 'react';
-import VideoList from './VideoList';
-import VideoDetail from './VideoDetail';
-import { connect } from 'react-redux'
-import videosActions from '../redux/videos/actions'
+import React, { lazy, Suspense } from "react";
 
-const {getVideos} = videosActions;
+import { withRouter, Switch, Route } from "react-router-dom";
+
+const ListItems = lazy(() => import("./ListItems/ListItems"));
+const SingleVideo = lazy(() => import("./SingleVideo/SingleVideo"));
+const NotFound = lazy(() => import("./404"));
 
 class App extends React.Component {
-
-    state = {
-        selectedVideo: null
-    }
-
-    handleVideoSelect = (video) => {
-        this.setState({selectedVideo: video})
-    }
-
-    
-    render() {
-    
-        const {videos} = this.props;
-
-        return (
-            <div className='ui container' style={{marginTop: '1em', height: '100vh'}}>
-                <div className='ui grid'>
-                    <div className="ui row">
-                        <div className="eleven wide column">
-                            <VideoDetail video={this.state.selectedVideo}/>
-                        </div>
-                        <div className="five wide column" >
-                            <VideoList handleVideoSelect={this.handleVideoSelect} videos={videos}/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+  render() {
+    return (
+      <Suspense fallback={<>loading..</>}>
+        <Switch>
+          <Route path="/results" render={() => <ListItems key={this.props.location.key}/>}/>
+          <Route path="/watch/:item" exact component={SingleVideo} />
+          <Route path="/404" component={NotFound} />
+          <Route path="*" component={NotFound} />
+        </Switch>
+      </Suspense>
+    );
+  }
 }
 
-
-const mapStateToProps = (state) => ({
-videos: state.Videos.videos
-})
-
-const mapDispatchToProps = {
-    getVideos
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(App);

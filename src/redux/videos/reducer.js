@@ -3,9 +3,11 @@ import videosActions from './actions';
 const initState = {
   videos: [],
   video: {},
+  videoComments: {},
   videosType: 'OPEN',
   loadingVideos: false,
-  loadingVideo: false
+  loadingVideo: false,
+  loadingCommentsVideo: false
 };
 
 export default function videosReducer(state = initState, action) {
@@ -26,11 +28,24 @@ export default function videosReducer(state = initState, action) {
         loadingVideos: false
       };
 
-    case videosActions.CHANGE_VIDEOS_TYPE:
+      case videosActions.GET_VIDEOS_FAILED:
+        return {
+          ...state,
+          loadingVideos: false
+        };
+  
+
+      case videosActions.CHANGE_VIDEOS_TYPE:
       return {
         ...state,
         videosType: action.payload
       }
+
+      case videosActions.SELECT_VIDEO:
+        return {
+          ...state,
+          video: action.payload,
+        };
 
 
       case videosActions.GET_SINGLE_VIDEO:
@@ -53,8 +68,20 @@ export default function videosReducer(state = initState, action) {
             loadingVideo: false
           };
   
-
-    default:
+          case videosActions.GET_COMMENTS_VIDEO:
+            return {
+              ...state,
+              loadingCommentsVideo: true
+            };
+  
+            case videosActions.GET_COMMENTS_VIDEO_SUCCESS:
+              return {
+                ...state,
+                loadingCommentsVideo: false,
+                comments: action.payload
+              };
+  
+            default:
       return state;
   }
 }

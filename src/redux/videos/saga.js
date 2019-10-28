@@ -11,12 +11,18 @@ export function* watchGetVideos() {
 
 export function* doGetVideos({payload}) {
   const response = yield call(VideosHelper.getVideos, payload);
-  yield put({
-    type: actions.GET_VIDEOS_SUCCESS,
-    payload: response,
-  });
-}
 
+  if(response){
+    yield put({
+      type: actions.GET_VIDEOS_SUCCESS,
+      payload: response,
+    });  
+  } else {
+    yield put({
+      type: actions.GET_VIDEOS_FAILED,
+    }); 
+  }
+}
 
 export function* watchGetSingleVideo() {
   yield takeEvery(actions.GET_SINGLE_VIDEO, doGetSingleVideo);
@@ -41,9 +47,29 @@ export function* doGetSingleVideo({payload, history}) {
 
 }
 
+export function* watchGetVideoComments() {
+  yield takeEvery(actions.GET_COMMENTS_VIDEO, doGetVideoComments);
+}
+
+export function* doGetVideoComments({payload}) {
+
+  //const response = yield call(VideosHelper.getVideoComments, payload);
+  
+const response = []
+
+  yield put({
+    type: actions.GET_COMMENTS_VIDEO_SUCCESS,
+    payload: response,
+  });
+
+}
+
+
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetVideos),
     fork(watchGetSingleVideo),
+    fork(watchGetVideoComments)
   ]);
 }

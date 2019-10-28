@@ -8,7 +8,46 @@ class VideosHelper {
 
     getVideos = async (payload) => {
         
+
         return await YoutubeFetch.get('/search', {
+            params: {
+                q: encodeURI(payload).replace('/%20/g', "+")
+            }
+        })
+            .then(response => {
+                //console.log('response', response)
+                if (response.error) {
+                    //notification({ type: 'error', message: `${response.error}`, description: '' });
+                    return false;
+                }
+                
+                if(response.data.items){
+                    return response.data.items;
+
+                }
+
+                return response;
+            })
+            .catch(e=> {
+                console.log('e', e)
+            })
+    }
+
+    getSingleVideo = async (name) => {
+
+        return await YoutubeFetch.get(`video/${name}`)
+            .then(response => {
+                //console.log('response', response)
+                if (response.error) {
+                    //notification({ type: 'error', message: `${response.error}`, description: '' });
+                }
+                return response;
+            })
+    }
+
+    getVideoComments = async (payload) => {
+
+        return await YoutubeFetch.get(`comments/`, {
             params: {
                 q: payload
             }
@@ -18,27 +57,9 @@ class VideosHelper {
                 if (response.error) {
                     //notification({ type: 'error', message: `${response.error}`, description: '' });
                 }
-
-                if(response.data.items){
-                    return response.data.items;
-                }
-
                 return response;
             })
     }
-
-    getSingleVideo = async (name) => {
-
-        return await YoutubeFetch.get(`kanji/${name}`)
-            .then(response => {
-                //console.log('response', response)
-                if (response.error) {
-                    //notification({ type: 'error', message: `${response.error}`, description: '' });
-                }
-                return response;
-            })
-    }
-
 
 
 }

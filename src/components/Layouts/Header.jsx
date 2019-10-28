@@ -15,6 +15,7 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import SearchBar from './SearchBar';
 import Spinner from '../Spinner'
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 
 const useStyles = makeStyles(theme => ({
@@ -36,23 +37,21 @@ const useStyles = makeStyles(theme => ({
   },
   title: {
     display: 'none',
-    maxWidth:"8%",
-    maxHeight:"8%",
+    maxWidth:"80%",
+    maxHeight:"80%",
     [theme.breakpoints.up('sm')]: {
       display: 'block',
-      maxWidth:"8%",
-      maxHeight:"8%",
+      maxWidth:"80%",
+      maxHeight:"80%",
       },
   },
   search: {
-
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: '2',
     backgroundColor: "#121212",
-    border: "1px solid #212121",
+    border: "1.5px solid #212121",
     '&:hover': {
       border: "1.5px solid #1C62B9"
     },
-    marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -61,9 +60,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   searchIcon: {
-    width: theme.spacing(7),
     height: '100%',
-    position: 'absolute',
+    cursor:'pointer',
     pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
@@ -72,14 +70,14 @@ const useStyles = makeStyles(theme => ({
   inputRoot: {
     color: 'inherit',
     margin: 'auto'
-
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 1),
     transition: theme.transitions.create('width'),
-    width: '100%',
+    width: '50vw',
     [theme.breakpoints.up('md')]: {
-      width: 280,
+      width: '60vw',
+      margin: 'auto'
     },
   },
   button: {
@@ -90,7 +88,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function Header({loading, loading2}) {
+function Header({loading, loading2, history}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -135,7 +133,7 @@ function Header({loading, loading2}) {
   return (
     <div className={classes.grow}>
       {loading && <Spinner/>}
-      <AppBar position="static" style={{ background: '#272727' }}>
+      <AppBar position="sticky" style={{ background: '#272727' }} >
         <Toolbar>
           <IconButton
             edge="start"
@@ -145,14 +143,17 @@ function Header({loading, loading2}) {
           >
             <MenuIcon />
           </IconButton>
-          <LogoYoutube className={classes.title}/>
-          <span>
+          <div onClick={()=>history.push('/results?search_query=')}>
+          <LogoYoutube className={classes.title} />
+          </div>
+          {/*<span>
             JA
-          </span>
+          </span>*/}
           <SearchBar classes={classes}/>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
+            
+            <IconButton aria-label="upload videos" color="inherit">
               <Badge color="secondary">
                 <VideoCallIcon />
               </Badge>
@@ -163,11 +164,13 @@ function Header({loading, loading2}) {
                 <AppsIcon />
               </Badge>
             </IconButton>
+            
             <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="primary">
+              <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -191,4 +194,4 @@ const mapStateToProps = state => ({
   loading2: state.Videos.loadingVideo
 });
 
-export default connect(mapStateToProps)(Header);
+export default withRouter(connect(mapStateToProps)(Header));
