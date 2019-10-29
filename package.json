@@ -9,6 +9,7 @@
     "axios": "^0.18.0",
     "history": "^4.10.1",
     "material-ui": "^0.20.2",
+    "moment": "^2.24.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-redux": "^7.1.1",
@@ -18,7 +19,8 @@
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "redux-thunk": "^2.3.0",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "styled-components": "^4.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

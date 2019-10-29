@@ -32,7 +32,6 @@ const SearchBar = ({ classes, getVideos, history, ...restProps }) => {
       <div className={classes.search}>
         <InputBase
           placeholder="Search"
-          hintText="Search Video"
           classes={{
             root: classes.inputRoot,
             input: classes.inputInput
@@ -42,9 +41,8 @@ const SearchBar = ({ classes, getVideos, history, ...restProps }) => {
           onKeyPress={onKeyPress}
         />
       </div>
-      <div className={classes.searchIcon}>          
-          </div>
-  
+      <div className={classes.searchIcon}></div>
+
       <Button color="primary" onClick={onHandleSubmit}>
         <SearchIcon />
       </Button>

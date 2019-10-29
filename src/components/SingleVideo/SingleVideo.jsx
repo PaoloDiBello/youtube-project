@@ -6,11 +6,9 @@ import { selectSingleVideo } from "../../redux/videos/selectors";
 
 import Comments from "./Comments/Comments";
 
-import { Card, CardHeader, CardMedia} from "@material-ui/core";
+import { Card, CardHeader, CardMedia } from "@material-ui/core";
 
 const SingleVideo = ({ video, match }) => {
-  console.log("video", video);
-
   const videoId = match.params.item;
 
   if (!videoId && !video) {
@@ -20,33 +18,37 @@ const SingleVideo = ({ video, match }) => {
     console.log(typeof video);
 
     return (
-      <div>
-
-<Card className="video-detail col-md-8" style={styles.card}>
-     
-        {video && <CardHeader
-          title={video.snippet.title}
-          titleStyle={styles.cardHeaderTitle}
-        />}
-
-        <CardMedia
-          className="embed-responsive embed-responsive-16by9"
-          mediaStyle={styles.cardMediaStyle}
-        >
-          <iframe
-            src={videoSrc}
-            frameBorder="0"
-            allow="autoplay; encrypted-media"
-            style={{
-              width: 1000,
-              height: 700
-            }}
-            allowFullScreen
-            title="Video player"
-          />
-        </CardMedia>
-        {video && <p>{video.snippet.description}</p>}
-      </Card>
+      <div style={styles.marginLeft}>
+        <Card className="video-detail col-md-8" style={styles.card}>
+          <CardMedia
+            className="embed-responsive embed-responsive-16by9"
+            mediaStyle={styles.cardMediaStyle}
+          >
+            <iframe
+              src={videoSrc}
+              frameBorder="0"
+              allow="autoplay; encrypted-media"
+              style={{
+                width: 900,
+                height: 500,
+                color: "red",
+                maxWidth: "100%",
+                maxHeight: "100%"
+              }}
+              allowFullScreen
+              title="Video player"
+            />
+          </CardMedia>
+          {video && (
+            <CardHeader
+              title={video.snippet.title}
+              color={{ color: " white" }}
+            />
+          )}
+          {video && (
+            <p style={{ color: "white" }}>{video.snippet.description}</p>
+          )}
+        </Card>
         <Comments />
       </div>
     );
@@ -67,19 +69,29 @@ export default connect(
 )(SingleVideo);
 
 const styles = {
-    card: {
-      position: 'relative',
-      marginTop: 10,
-      paddingLeft: 0,
-      paddingRight: 0
-    },
-    cardHeaderTitle: {
-      fontSize: 20,
-    },
-    cardMedia: {
-      minHeight: 200,
-    },
-    cardMediaStyle: {
-      maxHeight: 500,
-    },
-  };
+  outside: {
+    backgroundColor: "#221F20",
+    color: "white"
+  },
+  marginLeft: {
+    marginLeft: "70px"
+  },
+  card: {
+    position: "relative",
+    margin: 10,
+    borderRadius: 0,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor: "#221F20"
+  },
+  cardHeaderTitle: {
+    fontSize: 20
+  },
+  cardMedia: {
+    minHeight: 200,
+    width: "80%"
+  },
+  cardMediaStyle: {
+    maxHeight: 500
+  }
+};

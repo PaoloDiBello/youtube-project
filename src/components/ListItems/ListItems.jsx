@@ -1,15 +1,26 @@
 import React, { useEffect } from "react";
 import Item from "./Item";
 import { connect } from "react-redux";
-
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import videosActions from "../../redux/videos/actions";
 import { getSearchParam } from "../../services/url";
 import { withRouter } from "react-router";
 
+import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
 const { getVideos, selectVideo } = videosActions;
 
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: "block",
+    backgroundColor: "#121212",
+    alignItems: "flex-start",
+    marginLeft: "50px"
+  }
+}));
 
 const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
+  const classes = useStyles();
+
   console.log("videos", videos);
 
   const getSearchQuery = () => {
@@ -17,12 +28,11 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
   };
 
   useEffect(() => {
-    const query = decodeURI(getSearchQuery())
+    const query = decodeURI(getSearchQuery());
     getVideos(query);
   }, []);
 
   const handleVideoSelect = video => {
-
     selectVideo(video);
     history.push(`/watch/${video.id.videoId}`);
   };
@@ -41,10 +51,10 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
     });
 
     return (
-      <div
-        className="ui relaxed divided list"
-        style={{ backgroundColor: "black!important" }}
-      >
+      <div className={classes.container}>
+        <div style={{ width: "30px", height: "30px" }}>
+          <FilterIcon /> Filter
+        </div>
         {renderedVideos}
       </div>
     );
