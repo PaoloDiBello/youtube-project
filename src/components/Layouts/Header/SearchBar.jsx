@@ -11,9 +11,10 @@ const { getVideos } = videosActions;
 
 const useStyles = makeStyles(theme => ({
   search: {
-    borderRadius: "2",
+    borderRadius: "1",
     backgroundColor: "#121212",
     border: "1.5px solid #212121",
+    borderRight: "none",
     "&:hover": {
       border: "1.5px solid #1C62B9"
     },
@@ -26,10 +27,14 @@ const useStyles = makeStyles(theme => ({
   searchIcon: {
     height: "100%",
     cursor: "pointer",
-    pointerEvents: "none",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "hsl(0, 0%, 19%)",
+    "&:hover": {
+      color: "white",
+      backgroundColor: "hsl(0, 0%, 19%)"
+    }
   },
   inputRoot: {
     color: "inherit",
@@ -80,11 +85,11 @@ const SearchBar = ({ getVideos, history, ...restProps }) => {
           onKeyPress={onKeyPress}
         />
       </div>
-      <div className={classes.searchIcon}></div>
-
-      <Button color="primary" onClick={onHandleSubmit}>
-        <SearchIcon />
-      </Button>
+      <div className={classes.searchIcon}>
+        <Button color="primary" onClick={onHandleSubmit}>
+          <SearchIcon />
+        </Button>
+      </div>
     </>
   );
 };

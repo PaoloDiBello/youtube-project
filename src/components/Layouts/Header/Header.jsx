@@ -62,6 +62,10 @@ const useStyles = makeStyles(theme => ({
     maxHeight: "35%",
     cursor: "pointer"
   },
+  searchBar: {
+    justifyContent: "center",
+    width: "100%"
+  },
   drawerPaper: {
     position: "relative",
     whiteSpace: "nowrap",
@@ -91,8 +95,6 @@ const useStyles = makeStyles(theme => ({
     overflow: "auto"
   },
   container: {
-    height: "100vh",
-    width: "100vw",
     padding: 0
   },
   paper: {
@@ -143,7 +145,7 @@ function Header({ loading, history, children }) {
             <LogoYoutube className={classes.title} />
           </div>
 
-          <SearchBar />
+          <SearchBar className={classes.searchbar} />
 
           <div
             style={{
