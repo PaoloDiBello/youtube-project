@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%"
   },
   content: {
-    flex: "1 0 auto",
+    flex: "1 0 1",
     cursor: "pointer"
   },
   cover: {
@@ -43,7 +43,7 @@ const Item = ({ video, handleVideoSelect }) => {
       <div className={classes.details}>
         <CardMedia
           className={classes.cover}
-          image={video.snippet.thumbnails.default.url}
+          image={video.snippet.thumbnails.high.url}
           title={video.snippet.title}
         />
         <CardContent className={classes.content}>

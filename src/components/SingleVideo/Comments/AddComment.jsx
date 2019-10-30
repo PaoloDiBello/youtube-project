@@ -23,7 +23,7 @@ const AddComment = () => {
         onClick={() => handleShowSubmit(true)}
       />
       {submit && (
-        <div style={{ position: "absolute", left: "10px" }}>
+        <div style={{ float: "right" }}>
           <Button style={{ backgroundColor: "#C3CBB4" }}>Submit</Button>
           <Button onClick={() => handleShowSubmit(false)}>Cancel</Button>
         </div>

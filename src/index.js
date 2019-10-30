@@ -37,8 +37,9 @@ ReactDOM.render(
     <MuiThemeProvider theme={theme}>
       <Router>
         <CssBaseline />
-        <Header />
-        <App />
+        <Header>
+          <App />
+        </Header>
       </Router>
     </MuiThemeProvider>
   </Provider>,

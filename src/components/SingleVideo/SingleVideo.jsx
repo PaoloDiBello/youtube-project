@@ -6,7 +6,7 @@ import { selectSingleVideo } from "../../redux/videos/selectors";
 
 import Comments from "./Comments/Comments";
 
-import { Card, CardHeader, CardMedia } from "@material-ui/core";
+import { Card, CardHeader, CardMedia, Typography } from "@material-ui/core";
 
 const SingleVideo = ({ video, match }) => {
   const videoId = match.params.item;
@@ -31,7 +31,6 @@ const SingleVideo = ({ video, match }) => {
               style={{
                 width: 900,
                 height: 500,
-                color: "red",
                 maxWidth: "100%",
                 maxHeight: "100%"
               }}
@@ -41,12 +40,13 @@ const SingleVideo = ({ video, match }) => {
           </CardMedia>
           {video && (
             <CardHeader
-              title={video.snippet.title}
-              color={{ color: " white" }}
+              title={
+                <Typography color="primary">{video.snippet.title}</Typography>
+              }
             />
           )}
           {video && (
-            <p style={{ color: "white" }}>{video.snippet.description}</p>
+            <Typography color="primary">{video.snippet.description}</Typography>
           )}
         </Card>
         <Comments />
@@ -70,11 +70,13 @@ export default connect(
 
 const styles = {
   outside: {
-    backgroundColor: "#221F20",
     color: "white"
   },
   marginLeft: {
-    marginLeft: "70px"
+    marginLeft: "70px",
+    backgroundColor: "#221F20",
+    width: "100%",
+    height: "100%"
   },
   card: {
     position: "relative",

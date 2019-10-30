@@ -3,13 +3,52 @@ import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 
 import { connect } from "react-redux";
-import videosActions from "../../redux/videos/actions";
+import videosActions from "../../../redux/videos/actions";
 import { Button } from "@material-ui/core";
 import { withRouter } from "react-router";
-
+import { makeStyles } from "@material-ui/core/styles";
 const { getVideos } = videosActions;
 
-const SearchBar = ({ classes, getVideos, history, ...restProps }) => {
+const useStyles = makeStyles(theme => ({
+  search: {
+    borderRadius: "2",
+    backgroundColor: "#121212",
+    border: "1.5px solid #212121",
+    "&:hover": {
+      border: "1.5px solid #1C62B9"
+    },
+    marginLeft: 0,
+    width: "70%",
+    [theme.breakpoints.up("sm")]: {
+      width: "auto"
+    }
+  },
+  searchIcon: {
+    height: "100%",
+    cursor: "pointer",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  inputRoot: {
+    color: "inherit",
+    margin: "auto"
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 1),
+    transition: theme.transitions.create("width"),
+    width: "40vw",
+    [theme.breakpoints.up("md")]: {
+      width: "40vw",
+      margin: "auto"
+    }
+  }
+}));
+
+const SearchBar = ({ getVideos, history, ...restProps }) => {
+  const classes = useStyles();
+
   const [input, setInput] = useState("");
 
   const onHandleSubmit = () => {

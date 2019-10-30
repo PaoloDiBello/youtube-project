@@ -15,8 +15,7 @@ const useStyles = makeStyles(theme => ({
     color: "#fff",
     marginTop: "50px",
     width: "100%",
-    maxWidth: 1000,
-    backgroundColor: "#221F20"
+    maxWidth: 1000
   },
   inline: {
     display: "inline"

@@ -7,6 +7,7 @@ import { getSearchParam } from "../../services/url";
 import { withRouter } from "react-router";
 
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
+import { Divider } from "@material-ui/core";
 const { getVideos, selectVideo } = videosActions;
 
 const useStyles = makeStyles(theme => ({
@@ -14,7 +15,21 @@ const useStyles = makeStyles(theme => ({
     display: "block",
     backgroundColor: "#121212",
     alignItems: "flex-start",
-    marginLeft: "50px"
+    padding: "20px"
+  },
+  listItems: {
+    width: "60vw"
+  },
+  filter: {
+    width: "30px",
+    color: "#C8C7C4",
+    fill: "#C8C7C4"
+  },
+  filterIcon: {
+    display: "inline!important"
+  },
+  divider: {
+    backgroundColor: "#C8C7C4"
   }
 }));
 
@@ -52,10 +67,16 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
 
     return (
       <div className={classes.container}>
-        <div style={{ width: "30px", height: "30px" }}>
-          <FilterIcon /> Filter
+        <div className={classes.filter}>
+          FILTER
+          <div className={classes.filterIcon}>
+            <FilterIcon />
+          </div>
         </div>
-        {renderedVideos}
+        <div className={classes.listItems}>
+          <Divider className={classes.divider} />
+          {renderedVideos}
+        </div>
       </div>
     );
   } else {

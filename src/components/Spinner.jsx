@@ -1,11 +1,11 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { LinearProgress } from '@material-ui/core';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import { LinearProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
   progress: {
-    margin: theme.spacing(2),
-  },
+    margin: theme.spacing(2)
+  }
 }));
 
 export default function CircularIndeterminate() {
@@ -13,7 +13,7 @@ export default function CircularIndeterminate() {
 
   return (
     <div className={classes.root}>
-      <LinearProgress color="secondary"/>
+      <LinearProgress color="secondary" />
     </div>
   );
 }
