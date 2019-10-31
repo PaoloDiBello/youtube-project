@@ -11,7 +11,10 @@ const useStyles = makeStyles(theme => ({
     float: "right"
   },
   submitButton: {
-    backgroundColor: "#3EA6FF"
+    backgroundColor: "#3EA6FF",
+    "&:hover": {
+      backgroundColor: "#3EA6FF"
+    }
   }
 }));
 
@@ -56,7 +59,7 @@ const AddComment = () => {
           <Button
             className={classes.submitButton}
             onClick={handleSubmit}
-            disabled={input.length > 0}
+            disabled={!(input.length > 0)}
           >
             Submit
           </Button>
