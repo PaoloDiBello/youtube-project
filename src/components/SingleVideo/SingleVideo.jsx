@@ -49,7 +49,7 @@ const SingleVideo = ({ video, match }) => {
             <Typography color="primary">{video.snippet.description}</Typography>
           )}
         </Card>
-        <Comments />
+        <Comments videoId={videoId} />
       </div>
     );
   }

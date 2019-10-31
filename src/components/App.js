@@ -11,7 +11,10 @@ class App extends React.Component {
     return (
       <Suspense fallback={<>loading..</>}>
         <Switch>
-          <Route path="/results" render={() => <ListItems key={this.props.location.key}/>}/>
+          <Route
+            path="/results"
+            render={() => <ListItems key={this.props.location.key} />}
+          />
           <Route path="/watch/:item" exact component={SingleVideo} />
           <Route path="/404" component={NotFound} />
           <Route path="*" component={NotFound} />

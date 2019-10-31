@@ -4,7 +4,7 @@ export default createMuiTheme({
   overrides: {
     MuiButton: {
       root: {
-        fontWeight: "bold",
+        fontWeight: "light",
         backgroundColor: "red",
         margin: "10px",
         "&:hover": {

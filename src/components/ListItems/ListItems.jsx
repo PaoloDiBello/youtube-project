@@ -5,9 +5,10 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import videosActions from "../../redux/videos/actions";
 import { getSearchParam } from "../../services/url";
 import { withRouter } from "react-router";
-
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
-import { Divider } from "@material-ui/core";
+import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import { Divider, Button } from "@material-ui/core";
+
 const { getVideos, selectVideo } = videosActions;
 
 const useStyles = makeStyles(theme => ({
@@ -21,12 +22,16 @@ const useStyles = makeStyles(theme => ({
     width: "60vw"
   },
   filter: {
-    width: "30px",
+    fontWeight: "300",
+    display: "flex",
     color: "#C8C7C4",
-    fill: "#C8C7C4"
+    fill: "#C8C7C4",
+    padding: "7px",
+    alignItems: "center"
   },
   filterIcon: {
-    display: "inline!important"
+    display: "inline!important",
+    padding: "2px"
   },
   divider: {
     backgroundColor: "#C8C7C4"
@@ -67,12 +72,13 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
 
     return (
       <div className={classes.container}>
-        <div className={classes.filter}>
-          FILTER
-          <div className={classes.filterIcon}>
+        <Button className={classes.filter}>
+          <SvgIcon className={classes.filterIcon}>
             <FilterIcon />
-          </div>
-        </div>
+          </SvgIcon>
+          FILTER
+        </Button>
+        <Button className={classes.filter}></Button>
         <div className={classes.listItems}>
           <Divider className={classes.divider} />
           {renderedVideos}

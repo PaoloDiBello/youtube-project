@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
     }
   },
   searchIcon: {
-    height: "100%",
+    height: "53%",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",

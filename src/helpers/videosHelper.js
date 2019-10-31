@@ -6,8 +6,6 @@ import YoutubeFetch from "./youtubeFetch";
  */
 class VideosHelper {
   getVideos = async payload => {
-    {
-    }
     return await YoutubeFetch.get("/search", {
       params: {
         q: encodeURI(payload).replace("/%20/g", "+")
@@ -39,13 +37,13 @@ class VideosHelper {
     });
   };
 
-  getVideoComments = async payload => {
-    return await YoutubeFetch.get(`comments/`, {
+  getCommentsVideo = async payload => {
+    return await YoutubeFetch.get(`commentThreads/`, {
       params: {
-        q: payload
+        videoId: payload
       }
     }).then(response => {
-      //console.log('response', response)
+      console.log("response", response);
       if (response.error) {
         //notification({ type: 'error', message: `${response.error}`, description: '' });
       }

@@ -4,8 +4,7 @@ import App from "./components/App";
 import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
-import { Header, Footer } from "./components/Layouts/index";
-import * as Colors from "material-ui/styles/colors";
+import { Header } from "./components/Layouts/index";
 import "./index.css";
 import CssBaseline from "@material-ui/core/CssBaseline";
 
