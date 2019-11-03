@@ -7,15 +7,17 @@ import { selectSingleVideo } from "../../redux/videos/selectors";
 import Comments from "./Comments/Comments";
 
 import { Card, CardHeader, CardMedia, Typography } from "@material-ui/core";
+import { useParams } from 'react-router-dom'
 
-const SingleVideo = ({ video, match }) => {
-  const videoId = match.params.item;
+const SingleVideo = ({ video }) => {
+
+  const { item: videoId } = useParams();
 
   if (!videoId && !video) {
     return <div>Loading ...</div>;
   } else {
+
     const videoSrc = `https://www.youtube.com/embed/${videoId}`;
-    console.log(typeof video);
 
     return (
       <div style={styles.marginLeft}>

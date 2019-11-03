@@ -3,7 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { LinearProgress } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
-  root: {}
+  root: {
+  }
 }));
 
 export default function CircularIndeterminate() {
