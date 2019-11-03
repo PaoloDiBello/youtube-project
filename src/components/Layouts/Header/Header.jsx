@@ -52,7 +52,6 @@ const useStyles = makeStyles(theme => ({
     padding: 0
   },
   paper: {
-    padding: theme.spacing(2),
     display: "flex",
     overflow: "auto",
     flexDirection: "column"
@@ -62,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Header({ loading, history, children }) {
+function Header({ loading, loading2, history, children }) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
 
@@ -77,7 +76,7 @@ function Header({ loading, history, children }) {
   return (
     <div className={classes.root}>
       <AppBar position="absolute" className={clsx(classes.appBar)}>
-        {loading && <Spinner />}
+        {(loading || loading2) && <Spinner />}
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"

@@ -1,37 +1,36 @@
-import React from "react";
-
-import { connect } from "react-redux";
-
-import { selectSingleVideo, selectVideoLoading } from "../../redux/videos/selectors";
-
+import React, { useEffect } from "react";
+import InfoVideo from './InfoVideo'
 import Comments from "./Comments/Comments";
 
-import { Card, CardHeader, CardMedia, Typography } from "@material-ui/core";
+import { Card, CardMedia } from "@material-ui/core";
+
 import { useParams } from 'react-router-dom'
-import videosActions from "../../redux/videos/actions";
+
+import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import moment from "moment";
+import { selectSingleVideo, selectVideoLoading } from "../../redux/videos/selectors";
+
+import videosActions from "../../redux/videos/actions";
 const { getSingleVideo } = videosActions;
+
 
 const SingleVideo = ({ video, getSingleVideo, history, loading }) => {
 
   const { item: videoId } = useParams();
 
-  console.log('video', video)
-
-  React.useEffect(() => {
+  useEffect(() => {
     getSingleVideo(videoId, history)
   }, [videoId, getSingleVideo])
 
 
-  if (!videoId && !video) {
+  if (!videoId && !loading && !video) {
     return <div>Loading ...</div>;
   } else {
 
     const videoSrc = `https://www.youtube.com/embed/${videoId}`;
 
     return (
-      <div style={styles.marginLeft}>
+      <div style={styles.root}>
         <Card className="video-detail col-md-8" style={styles.card}>
           <CardMedia
             className="embed-responsive embed-responsive-16by9"
@@ -51,27 +50,9 @@ const SingleVideo = ({ video, getSingleVideo, history, loading }) => {
               title="Video player"
             />
           </CardMedia>
-          {(!loading && video.snippet) && (
-            <>
-              <CardHeader
-                title={
-                  <Typography color="primary">{video.snippet.title} {video.channelTitle}</Typography>
-                }
-              />
-
-              <CardHeader
-                title={
-                  <Typography color="primary">{video.statistics.viewCount} views • {moment(video.snippet.publishedAt, "YYYYMMDD").fromNow()}</Typography>
-                }
-              />
-            </>
-
-          )}
-          {(!loading && video.snippet) && (
-            <Typography color="primary">{video.snippet.description}</Typography>
-          )}
+          <InfoVideo />
         </Card>
-        <Comments videoId={videoId} />
+        {video.statistics && <Comments videoId={videoId} count={video.statistics.commentCount} />}
       </div>
     );
   }
@@ -95,11 +76,13 @@ const styles = {
   outside: {
     color: "white"
   },
-  marginLeft: {
+  root: {
     marginLeft: "70px",
     backgroundColor: "#221F20",
     width: "100%",
-    height: "100%"
+    height: "100%",
+    maxWidth: "70vw"
+
   },
   card: {
     position: "relative",
@@ -107,7 +90,7 @@ const styles = {
     borderRadius: 0,
     paddingLeft: 0,
     paddingRight: 0,
-    backgroundColor: "#221F20"
+    backgroundColor: "#221F20",
   },
   cardHeaderTitle: {
     fontSize: 20

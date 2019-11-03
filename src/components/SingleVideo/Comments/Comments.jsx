@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Comments({ getCommentsVideo, comments, loading, videoId }) {
+function Comments({ getCommentsVideo, comments, loading, videoId, count }) {
   const classes = useStyles();
   useEffect(() => {
     getCommentsVideo(videoId);
@@ -41,7 +41,7 @@ function Comments({ getCommentsVideo, comments, loading, videoId }) {
   return (
     <List className={classes.root}>
       <Divider variant="inset" component="li" />
-      <p>{comments.length} Comments</p>
+      <p>{count} Comments</p>
 
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
@@ -61,10 +61,10 @@ function Comments({ getCommentsVideo, comments, loading, videoId }) {
           ))}
         </div>
       ) : (
-        Array.from(new Array(3)).map(item => {
-          return <div></div>;
-        })
-      )}
+          Array.from(new Array(3)).map(item => {
+            return <div></div>;
+          })
+        )}
     </List>
   );
 }

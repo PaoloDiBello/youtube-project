@@ -11,7 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ControlsComment from './ControlsComment'
 
 const useStyles = makeStyles(theme => ({
-  inline: {
+  textComment: {
     display: "block",
     color: "#fff"
   },
@@ -57,7 +57,7 @@ const SingleComment = ({ comment }) => {
               <Typography
                 component="span"
                 variant="body2"
-                className={classes.inline}
+                className={classes.textComment}
                 color="primary"
               >
                 {comment.textDisplay}
