@@ -7,14 +7,16 @@ export const selectVideos = createSelector(
   Videos => Videos.videos
 );
 
-export const selectSingleVideo = videoId =>
-  createSelector(
-    [selectVideos],
-    videos =>
-      videos.length > 0
-        ? videos[videos.findIndex(video => video.id.videoId === videoId)]
-        : null
-  );
+export const selectSingleVideo = createSelector(
+  [selectVideosState],
+  Videos => Videos.video
+);
+
+export const selectVideoLoading = createSelector(
+  [selectVideosState],
+  Videos => Videos.loadingVideo
+);
+
 
 export const selectCommentsVideo = createSelector(
   [selectVideosState],

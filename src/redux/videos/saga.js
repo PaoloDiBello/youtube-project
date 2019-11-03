@@ -28,7 +28,9 @@ export function* watchGetSingleVideo() {
 }
 
 export function* doGetSingleVideo({ payload, history }) {
+
   const response = yield call(VideosHelper.getSingleVideo, payload);
+  console.log('response', response)
 
   if (!response.error) {
     yield put({

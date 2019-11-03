@@ -2,16 +2,27 @@ import React from "react";
 
 import { connect } from "react-redux";
 
-import { selectSingleVideo } from "../../redux/videos/selectors";
+import { selectSingleVideo, selectVideoLoading } from "../../redux/videos/selectors";
 
 import Comments from "./Comments/Comments";
 
 import { Card, CardHeader, CardMedia, Typography } from "@material-ui/core";
 import { useParams } from 'react-router-dom'
+import videosActions from "../../redux/videos/actions";
+import { createStructuredSelector } from "reselect";
+import moment from "moment";
+const { getSingleVideo } = videosActions;
 
-const SingleVideo = ({ video }) => {
+const SingleVideo = ({ video, getSingleVideo, history, loading }) => {
 
   const { item: videoId } = useParams();
+
+  console.log('video', video)
+
+  React.useEffect(() => {
+    getSingleVideo(videoId, history)
+  }, [videoId, getSingleVideo])
+
 
   if (!videoId && !video) {
     return <div>Loading ...</div>;
@@ -40,14 +51,23 @@ const SingleVideo = ({ video }) => {
               title="Video player"
             />
           </CardMedia>
-          {video && (
-            <CardHeader
-              title={
-                <Typography color="primary">{video.snippet.title}</Typography>
-              }
-            />
+          {(!loading && video.snippet) && (
+            <>
+              <CardHeader
+                title={
+                  <Typography color="primary">{video.snippet.title} {video.channelTitle}</Typography>
+                }
+              />
+
+              <CardHeader
+                title={
+                  <Typography color="primary">{video.statistics.viewCount} views • {moment(video.snippet.publishedAt, "YYYYMMDD").fromNow()}</Typography>
+                }
+              />
+            </>
+
           )}
-          {video && (
+          {(!loading && video.snippet) && (
             <Typography color="primary">{video.snippet.description}</Typography>
           )}
         </Card>
@@ -57,13 +77,14 @@ const SingleVideo = ({ video }) => {
   }
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  video: selectSingleVideo(ownProps.match.params.item)(state),
-  loading: state.Videos.loadingVideo,
-  videos: state.Videos.videos
+const mapStateToProps = createStructuredSelector({
+  video: selectSingleVideo,
+  loading: selectVideoLoading,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  getSingleVideo
+};
 
 export default connect(
   mapStateToProps,

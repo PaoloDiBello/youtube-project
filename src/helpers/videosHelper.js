@@ -28,12 +28,21 @@ class VideosHelper {
   };
 
   getSingleVideo = async name => {
-    return await YoutubeFetch.get(`video/${name}`).then(response => {
-      //console.log('response', response)
+    console.log('name', name)
+    return await YoutubeFetch.get(`videos/`, {
+      params: {
+        part: "snippet,contentDetails,statistics",
+        id: name
+      }
+    }).then(response => {
+
+      console.log('response', response)
       if (response.error) {
         //notification({ type: 'error', message: `${response.error}`, description: '' });
       }
-      return response;
+      return response.data.items[0];
+    }).catch(e => {
+      return e.response.data
     });
   };
 

@@ -2,14 +2,14 @@ import React, { useEffect } from "react";
 import Item from "./Item";
 import { connect } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import videosActions from "../../redux/videos/actions";
 import { getSearchParam } from "../../services/url";
 import { withRouter } from "react-router";
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import { Divider, Button } from "@material-ui/core";
 
-const { getVideos, selectVideo } = videosActions;
+import videosActions from "../../redux/videos/actions";
+const { getVideos } = videosActions;
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
+const ListItems = ({ videos, location, getVideos, history }) => {
   const classes = useStyles();
 
   console.log("videos", videos);
@@ -53,7 +53,6 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
   }, []);
 
   const handleVideoSelect = video => {
-    selectVideo(video);
     history.push(`/watch/${video.id.videoId}`);
   };
 
@@ -91,7 +90,6 @@ const ListItems = ({ videos, location, getVideos, selectVideo, history }) => {
 };
 
 const mapDispatchToProps = {
-  selectVideo,
   getVideos
 };
 

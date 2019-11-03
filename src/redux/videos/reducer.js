@@ -48,7 +48,6 @@ export default function videosReducer(state = initState, action) {
     case videosActions.GET_SINGLE_VIDEO:
       return {
         ...state,
-        video: action.payload,
         loadingVideo: true
       };
 

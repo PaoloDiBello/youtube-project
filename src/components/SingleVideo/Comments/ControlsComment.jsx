@@ -10,7 +10,8 @@ const useStyles = makeStyles(theme => ({
     root: {
         color: "white",
         display: "flex",
-        alignItems: "center"
+        alignItems: "center",
+        marginLeft: '40px'
     },
     thumbs: {
         display: "inline",
