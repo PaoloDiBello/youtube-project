@@ -11,14 +11,40 @@ export function* watchGetVideos() {
 export function* doGetVideos({ payload }) {
   const response = yield call(VideosHelper.getVideos, payload);
 
-  if (response) {
+  if (!response.error && response) {
+    const videoIds = response.map(item => item.id.videoId).join(",");
+    console.log("videoIds", videoIds);
+
     yield put({
-      type: actions.GET_VIDEOS_SUCCESS,
-      payload: response
+      type: actions.GET_VIDEOS_STATISTICS,
+      payload: {
+        ids: videoIds,
+        videos: response
+      }
     });
   } else {
     yield put({
       type: actions.GET_VIDEOS_FAILED
+    });
+  }
+}
+
+export function* watchGetVideosStatistics() {
+  yield takeEvery(actions.GET_VIDEOS_STATISTICS, doGetVideosStatistics);
+}
+
+export function* doGetVideosStatistics({ payload: { videos, ids } }) {
+  const response = yield call(VideosHelper.getVideosStatistics, ids);
+
+  if (!response.error && response) {
+    const videosWithStatistics = videos.map((video, i) => ({
+      statistics: response[i].statistics,
+      ...video
+    }));
+
+    yield put({
+      type: actions.GET_VIDEOS_SUCCESS,
+      payload: videosWithStatistics
     });
   }
 }
@@ -28,9 +54,8 @@ export function* watchGetSingleVideo() {
 }
 
 export function* doGetSingleVideo({ payload, history }) {
-
   const response = yield call(VideosHelper.getSingleVideo, payload);
-  console.log('response', response)
+  console.log("response", response);
 
   if (!response.error) {
     yield put({
@@ -68,6 +93,7 @@ export function* doGetCommentsVideo({ payload }) {
 export default function* rootSaga() {
   yield all([
     fork(watchGetVideos),
+    fork(watchGetVideosStatistics),
     fork(watchGetSingleVideo),
     fork(watchGetCommentsVideo)
   ]);

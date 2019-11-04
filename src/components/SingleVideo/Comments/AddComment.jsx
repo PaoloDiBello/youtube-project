@@ -6,13 +6,13 @@ import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
   textField: {
-    margin: 8,
+    margin: 8
   },
   textBlack: {
-    color: '#000000',
+    color: "#000000"
   },
   textWhite: {
-    color: '#fff'
+    color: "#fff"
   },
   buttons: {
     float: "right"
@@ -21,15 +21,14 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#3EA6FF",
     "&:hover": {
       backgroundColor: "#3EA6FF"
-    },
+    }
   },
   disabledButton: {
     backgroundColor: "#717171",
     "&:hover": {
       backgroundColor: "#717171"
-    },
+    }
   }
-
 }));
 
 const AddComment = () => {
@@ -45,24 +44,25 @@ const AddComment = () => {
   const handleSubmit = () => {
     console.log("input", input);
     setInput("");
+    setSubmit(false);
   };
 
-  React.useEffect(() => { }, []);
+  React.useEffect(() => {}, []);
 
   const handleShowSubmit = bool => {
     setSubmit(bool);
+    setInput("");
   };
 
   return (
     <>
-
       <TextField
         id="standard-full-width"
         placeholder="Add a public comment..."
         fullWidth
         margin="normal"
         InputLabelProps={{
-          shrink: true,
+          shrink: true
         }}
         inputProps={{
           className: classes.textWhite
@@ -77,10 +77,18 @@ const AddComment = () => {
 
       {submit && (
         <div className={classes.buttons}>
-          <Button onClick={() => handleShowSubmit(false)} className={classes.textWhite}>Cancel</Button>
+          <Button
+            onClick={() => handleShowSubmit(false)}
+            className={classes.textWhite}
+          >
+            Cancel
+          </Button>
           <Button
             classes={{
-              root: clsx(input.length > 0 && classes.submitButton, !(input.length > 0) && classes.disabledButton),
+              root: clsx(
+                input.length > 0 && classes.submitButton,
+                !(input.length > 0) && classes.disabledButton
+              ),
               label: clsx(classes.textBlack)
             }}
             onClick={handleSubmit}

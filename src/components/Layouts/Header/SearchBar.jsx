@@ -41,6 +41,10 @@ const useStyles = makeStyles(theme => ({
     margin: "auto"
   },
   inputInput: {
+    maxWidth: "100%",
+    display: "inline-block",
+    boxShadow: "none",
+    border: "none",
     padding: theme.spacing(1, 1, 1, 1),
     transition: theme.transitions.create("width"),
     width: "40vw",

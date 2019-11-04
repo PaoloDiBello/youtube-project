@@ -8,12 +8,17 @@ import Avatar from "@material-ui/core/Avatar";
 import moment from "moment";
 import { ListItemIcon } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ControlsComment from './ControlsComment'
+import ControlsComment from "./ControlsComment";
+import ReactHtmlParser from "react-html-parser";
 
 const useStyles = makeStyles(theme => ({
   textComment: {
     display: "block",
-    color: "#fff"
+    color: "#fff",
+    "&>a": {
+      textDecoration: "none",
+      color: "#3EA6FF"
+    }
   },
   date: {
     display: "inline",
@@ -23,7 +28,7 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "white"
   },
   icons: {
-    alignItems: "center"
+    marginTop: "-30px"
   }
 }));
 
@@ -60,7 +65,7 @@ const SingleComment = ({ comment }) => {
                 className={classes.textComment}
                 color="primary"
               >
-                {comment.textDisplay}
+                {ReactHtmlParser(comment.textDisplay)}
               </Typography>
             </React.Fragment>
           }

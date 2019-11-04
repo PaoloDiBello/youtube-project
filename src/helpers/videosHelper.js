@@ -8,7 +8,9 @@ class VideosHelper {
   getVideos = async payload => {
     return await YoutubeFetch.get("/search", {
       params: {
-        q: encodeURI(payload).replace("/%20/g", "+")
+        q: encodeURI(payload).replace("/%20/g", "+"),
+        regionCode: "US",
+        type: "video"
       }
     })
       .then(response => {
@@ -24,26 +26,48 @@ class VideosHelper {
       })
       .catch(e => {
         console.log("e", e);
+        return false;
+      });
+  };
+
+  getVideosStatistics = async ids => {
+    return await YoutubeFetch.get(`videos/`, {
+      params: {
+        part: "statistics",
+        id: ids
+      }
+    })
+      .then(response => {
+        console.log("response", response);
+        if (response.error) {
+          //notification({ type: 'error', message: `${response.error}`, description: '' });
+        }
+        return response.data.items;
+      })
+      .catch(e => {
+        return e.response.data;
       });
   };
 
   getSingleVideo = async name => {
-    console.log('name', name)
+    console.log("name", name);
     return await YoutubeFetch.get(`videos/`, {
       params: {
         part: "snippet,contentDetails,statistics",
+        regionCode: "US",
         id: name
       }
-    }).then(response => {
-
-      console.log('response', response)
-      if (response.error) {
-        //notification({ type: 'error', message: `${response.error}`, description: '' });
-      }
-      return response.data.items[0];
-    }).catch(e => {
-      return e.response.data
-    });
+    })
+      .then(response => {
+        console.log("response", response);
+        if (response.error) {
+          //notification({ type: 'error', message: `${response.error}`, description: '' });
+        }
+        return response.data.items[0];
+      })
+      .catch(e => {
+        return e.response.data;
+      });
   };
 
   getCommentsVideo = async payload => {

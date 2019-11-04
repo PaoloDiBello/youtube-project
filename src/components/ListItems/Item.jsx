@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import moment from "moment";
+import ReactHtmlParser from "react-html-parser";
+import { kFormatter } from "../../services/kFormatter";
+import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
   card: {
     display: "flex",
     height: "100%",
-    width: "100%",
     backgroundColor: "#121212",
     color: "#fff",
+    border: "none",
+    boxShadow: "none",
     margin: "10px",
-
     "&:hover": {}
   },
   details: {
@@ -27,10 +31,25 @@ const useStyles = makeStyles(theme => ({
     flex: "1 0 1",
     cursor: "pointer"
   },
+  text: {
+    fontSize: "0.9em!important"
+  },
   cover: {
     maxWidth: "20vw",
     width: "100%",
     cursor: "pointer"
+  },
+  moreIcon: {
+    alignSelf: "flex-start",
+    color: "#909090",
+    marginTop: "17px",
+    cursor: "pointer",
+    "&:hover": {
+      color: "#fff"
+    }
+  },
+  moreIconHidden: {
+    visibility: "hidden"
   }
 }));
 
@@ -38,26 +57,56 @@ const Item = ({ video, handleVideoSelect }) => {
   const classes = useStyles();
   const theme = useTheme();
 
+  const [hover, setHover] = useState(false);
   const date = moment(video.snippet.publishedAt, "YYYYMMDD").fromNow();
 
+  const handleHover = hover => {
+    setHover(hover);
+  };
+
   return (
-    <Card className={classes.card} onClick={() => handleVideoSelect(video)}>
+    <Card
+      className={classes.card}
+      onClick={() => handleVideoSelect(video)}
+      onMouseEnter={() => handleHover(true)}
+      onMouseLeave={() => handleHover(false)}
+    >
       <div className={classes.details}>
         <CardMedia
-          className={classes.cover}
+          classes={{
+            root: clsx(classes.cover)
+          }}
           image={video.snippet.thumbnails.high.url}
-          title={video.snippet.title}
+          title={<div className={classes.text}>{video.snippet.title}</div>}
         />
         <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            {decodeURI(video.snippet.title)}
+          <Typography>{ReactHtmlParser(video.snippet.title)}</Typography>
+          <Typography
+            variant="subtitle1"
+            color="primary"
+            className={classes.text}
+          >
+            {ReactHtmlParser(video.snippet.channelTitle)} •{" "}
+            {kFormatter(video.statistics.viewCount)} • {date}
           </Typography>
-          <Typography variant="subtitle1">{date}</Typography>
-          <Typography variant="subtitle1">
-            {video.snippet.channelTitle}
+          <Typography
+            variant="subtitle1"
+            color="primary"
+            className={classes.text}
+          >
+            {ReactHtmlParser(video.snippet.description)}
           </Typography>
         </CardContent>
       </div>
+
+      <MoreVertIcon
+        classes={{
+          root: clsx(
+            hover && classes.moreIcon,
+            !hover && classes.moreIconHidden
+          )
+        }}
+      />
     </Card>
   );
 };

@@ -7,6 +7,7 @@ import { withRouter } from "react-router";
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import { Divider, Button } from "@material-ui/core";
+import NotFound from "../404";
 
 import videosActions from "../../redux/videos/actions";
 const { getVideos } = videosActions;
@@ -19,15 +20,19 @@ const useStyles = makeStyles(theme => ({
     padding: "20px"
   },
   listItems: {
-    width: "60vw"
+    width: "60vw",
+    maxWidth: "900px"
   },
   filter: {
-    fontWeight: "300",
+    fontWeight: "600",
     display: "flex",
     color: "#C8C7C4",
     fill: "#C8C7C4",
     padding: "7px",
-    alignItems: "center"
+    alignItems: "center",
+    "&:hover": {
+      color: "#fff"
+    }
   },
   filterIcon: {
     display: "inline!important",
@@ -85,7 +90,7 @@ const ListItems = ({ videos, location, getVideos, history }) => {
       </div>
     );
   } else {
-    return <>No videos</>;
+    return <NotFound />;
   }
 };
 

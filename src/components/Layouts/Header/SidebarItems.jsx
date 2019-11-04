@@ -34,6 +34,7 @@ export const SidebarItems = () => {
       <ListItem button>
         <ListItemIcon>
           <SubscriptionsIcon color="primary" />
+          <p>yyyy</p>
         </ListItemIcon>
         <ListItemText primary={<b>{"Subscriptions"}</b>} />
       </ListItem>

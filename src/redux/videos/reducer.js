@@ -3,10 +3,12 @@ import videosActions from "./actions";
 const initState = {
   videos: [],
   video: {},
+  relatedVideos: [],
   commentsVideo: {},
   videosType: "OPEN",
   loadingVideos: false,
   loadingVideo: false,
+  loadingRelatedVideos: false,
   loadingCommentsVideo: false
 };
 
@@ -62,6 +64,19 @@ export default function videosReducer(state = initState, action) {
       return {
         ...state,
         loadingVideo: false
+      };
+
+    case videosActions.GET_RELATED_VIDEOS_SUCCESS:
+      return {
+        ...state,
+        videos: action.payload,
+        loadingRelatedVideos: false
+      };
+
+    case videosActions.GET_RELATED_VIDEOS_FAILED:
+      return {
+        ...state,
+        loadingRelatedVideos: false
       };
 
     case videosActions.GET_COMMENTS_VIDEO:
