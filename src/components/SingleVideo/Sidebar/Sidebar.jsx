@@ -19,7 +19,7 @@ const Sidebar = ({ videoId, getRelatedVideos, videos, loading }) => {
 
   return (
     <div>
-      {videoId}
+      <p style={{ color: "white" }}>Up next</p>
       <div>{renderedVideos}</div>
     </div>
   );

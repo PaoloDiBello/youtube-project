@@ -32,13 +32,14 @@ const useStyles = makeStyles(theme => ({
     flex: "1 0 1",
     cursor: "pointer"
   },
+  title: {},
   text: {
     fontSize: "0.9em!important"
   },
   cover: {
     maxWidth: "20vw",
     minWidth: "10vw",
-    width: "100%",
+    width: "550px",
     cursor: "pointer"
   },
   moreIcon: {
@@ -86,7 +87,9 @@ const Item = ({ video, history, sidebar = false }) => {
           title={<div className={classes.text}>{video.snippet.title}</div>}
         />
         <CardContent className={classes.content}>
-          <Typography>{ReactHtmlParser(video.snippet.title)}</Typography>
+          <Typography className={classes.title}>
+            {ReactHtmlParser(video.snippet.title)}
+          </Typography>
           <Typography
             variant="subtitle1"
             color="primary"

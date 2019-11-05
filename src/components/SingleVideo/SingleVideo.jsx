@@ -94,7 +94,7 @@ const styles = {
     display: "flex"
   },
   root: {
-    marginLeft: "70px",
+    marginLeft: "20px",
     backgroundColor: "#221F20",
     width: "100%",
     height: "100%",
