@@ -11,7 +11,18 @@ const Sidebar = ({ videoId, getRelatedVideos, videos, loading }) => {
     getRelatedVideos(videoId);
   }, [videoId]);
 
-  return <div>{videoId}</div>;
+  if (videos.length > 0) {
+    var renderedVideos = videos.map(video => {
+      return <Item key={video.id.videoId} video={video} sidebar={true} />;
+    });
+  }
+
+  return (
+    <div>
+      {videoId}
+      <div>{renderedVideos}</div>
+    </div>
+  );
 };
 
 const mapStateToProps = state => ({

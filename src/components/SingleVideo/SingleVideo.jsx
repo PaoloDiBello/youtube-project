@@ -61,7 +61,7 @@ const SingleVideo = ({ video, getSingleVideo, history, loading }) => {
               count={
                 video.statistics.commentCount
                   ? commafy(video.statistics.commentCount)
-                  : Math.random()
+                  : 0
               }
             />
           )}

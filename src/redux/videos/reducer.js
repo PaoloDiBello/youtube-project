@@ -2,14 +2,15 @@ import videosActions from "./actions";
 
 const initState = {
   videos: [],
-  nextPageToken: null,
+  nextPageToken: null, // for videos
   video: {},
-  relatedVideos: [],
   commentsVideo: {},
+  nextPageTokenComments: null,
+  relatedVideos: [],
+  nextPageTokenRelatedVideos: null,
   videosType: "OPEN",
   loadingVideos: false,
   loadingVideo: false,
-  loadingRelatedVideos: false,
   loadingCommentsVideo: false
 };
 
@@ -20,14 +21,13 @@ export default function videosReducer(state = initState, action) {
     case videosActions.GET_VIDEOS:
       return {
         ...state,
-        nextPageToken: null,
         loadingVideos: true
       };
 
     case videosActions.GET_VIDEOS_SUCCESS:
       return {
         ...state,
-        videos: [...state.videos, ...action.payload],
+        videos: action.payload,
         nextPageToken: action.nextPageToken,
         loadingVideos: false
       };
@@ -36,6 +36,13 @@ export default function videosReducer(state = initState, action) {
       return {
         ...state,
         loadingVideos: false
+      };
+
+    case videosActions.LOAD_MORE_VIDEOS_SUCCESS:
+      return {
+        ...state,
+        videos: [...state.videos, ...action.payload],
+        nextPageToken: action.nextPageToken
       };
 
     case videosActions.CHANGE_VIDEOS_TYPE:
@@ -72,14 +79,13 @@ export default function videosReducer(state = initState, action) {
     case videosActions.GET_RELATED_VIDEOS_SUCCESS:
       return {
         ...state,
-        videos: action.payload,
-        loadingRelatedVideos: false
+        relatedVideos: action.payload,
+        nextPageTokenRelatedVideos: action.nextPageToken
       };
 
     case videosActions.GET_RELATED_VIDEOS_FAILED:
       return {
-        ...state,
-        loadingRelatedVideos: false
+        ...state
       };
 
     case videosActions.GET_COMMENTS_VIDEO:
@@ -92,7 +98,8 @@ export default function videosReducer(state = initState, action) {
       return {
         ...state,
         loadingCommentsVideo: false,
-        commentsVideo: action.payload
+        commentsVideo: action.payload,
+        nextPageTokenComments: action.nextPageToken
       };
     case videosActions.GET_COMMENTS_VIDEO_FAILED:
       return {
@@ -100,6 +107,14 @@ export default function videosReducer(state = initState, action) {
         loadingCommentsVideo: false,
         commentsVideo: []
       };
+
+    case videosActions.LOAD_MORE_COMMENTS_VIDEO_SUCCESS:
+      return {
+        ...state,
+        commentsVideo: [...state.commentsVideo, ...action.payload],
+        nextPageTokenComments: action.nextPageToken
+      };
+
     default:
       return state;
   }

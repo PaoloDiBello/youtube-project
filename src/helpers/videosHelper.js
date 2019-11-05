@@ -5,26 +5,18 @@ import YoutubeFetch from "./youtubeFetch";
  * @typedef {class} VideosHelper
  */
 class VideosHelper {
-  getVideos = async ({ query, nextPageToken }) => {
-    const paramsFetch = {
+  getVideos = async query => {
+    return await YoutubeFetch.get("/search", {
       params: {
         q: encodeURI(query).replace("/%20/g", "+"),
         regionCode: "US",
         type: "video"
       }
-    };
-
-    if (nextPageToken) {
-      paramsFetch.params.pageToken = nextPageToken;
-    }
-
-    return await YoutubeFetch.get("/search", paramsFetch)
+    })
       .then(response => {
         if (response.error) {
           return false;
-        }
-
-        if (response.data.items) {
+        } else if (response.data.items) {
           return {
             items: response.data.items,
             nextPageToken: response.data.nextPageToken
@@ -58,6 +50,33 @@ class VideosHelper {
       });
   };
 
+  loadMoreVideos = async ({ query, nextPageToken }) => {
+    return await YoutubeFetch.get("/search", {
+      params: {
+        q: encodeURI(query).replace("/%20/g", "+"),
+        regionCode: "US",
+        type: "video",
+        pageToken: nextPageToken
+      }
+    })
+      .then(response => {
+        if (response.error) {
+          return false;
+        } else if (response.data.items) {
+          return {
+            items: response.data.items,
+            nextPageToken: response.data.nextPageToken
+          };
+        }
+
+        return response;
+      })
+      .catch(e => {
+        console.log("e", e);
+        return false;
+      });
+  };
+
   getSingleVideo = async name => {
     console.log("name", name);
     return await YoutubeFetch.get(`videos/`, {
@@ -79,18 +98,73 @@ class VideosHelper {
       });
   };
 
-  getCommentsVideo = async payload => {
+  getCommentsVideo = async videoId => {
     return await YoutubeFetch.get(`commentThreads/`, {
       params: {
-        videoId: payload
+        videoId
       }
     }).then(response => {
       console.log("response", response);
       if (response.error) {
-        //notification({ type: 'error', message: `${response.error}`, description: '' });
+        return false;
+      } else if (response.data.items) {
+        return {
+          items: response.data.items,
+          nextPageToken: response.data.nextPageToken
+        };
       }
+
       return response;
     });
+  };
+
+  loadMoreCommentsVideo = async ({ videoId, nextPageToken }) => {
+    return await YoutubeFetch.get(`commentThreads/`, {
+      params: {
+        pageToken: nextPageToken,
+        videoId
+      }
+    })
+      .then(response => {
+        console.log("response", response);
+        if (response.error) {
+          return false;
+        } else if (response.data.items) {
+          return {
+            items: response.data.items,
+            nextPageToken: response.data.nextPageToken
+          };
+        }
+
+        return response;
+      })
+      .catch(e => false);
+  };
+
+  getRelatedVideos = async videoId => {
+    return await YoutubeFetch.get("/search", {
+      params: {
+        relatedToVideoId: videoId,
+        regionCode: "US",
+        type: "video"
+      }
+    })
+      .then(response => {
+        if (response.error) {
+          return false;
+        } else if (response.data.items) {
+          return {
+            items: response.data.items,
+            nextPageToken: response.data.nextPageToken
+          };
+        }
+
+        return response;
+      })
+      .catch(e => {
+        console.log("e", e);
+        return false;
+      });
   };
 }
 

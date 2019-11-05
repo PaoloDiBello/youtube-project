@@ -12,11 +12,13 @@ import {
   selectCommentsVideoReduced,
   selectLoadingCommentsVideo
 } from "../../../redux/videos/selectors";
+import InfiniteScroll from "react-infinite-scroller";
 
 import { connect } from "react-redux";
 import videosActions from "../../../redux/videos/actions";
 import { createStructuredSelector } from "reselect";
-const { getCommentsVideo } = videosActions;
+import { CircularProgress } from "@material-ui/core";
+const { getCommentsVideo, loadMoreCommentsVideo } = videosActions;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -30,11 +32,22 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Comments({ getCommentsVideo, comments, loading, videoId, count }) {
+function Comments({
+  getCommentsVideo,
+  comments,
+  loadMoreCommentsVideo,
+  loading,
+  videoId,
+  count
+}) {
   const classes = useStyles();
   useEffect(() => {
     getCommentsVideo(videoId);
   }, []);
+
+  const loadMore = () => {
+    loadMoreCommentsVideo(videoId);
+  };
 
   console.log("comments", comments);
 
@@ -55,16 +68,21 @@ function Comments({ getCommentsVideo, comments, loading, videoId, count }) {
       </ListItem>
 
       {!loading && comments.length > 0 ? (
-        <div>
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadMore}
+          hasMore={true || false}
+          loader={<CircularProgress />}
+        >
           {comments.map(comment => (
             <SingleComment comment={comment} />
           ))}
-        </div>
+        </InfiniteScroll>
       ) : (
-          Array.from(new Array(3)).map(item => {
-            return <div></div>;
-          })
-        )}
+        Array.from(new Array(3)).map(item => {
+          return <div></div>;
+        })
+      )}
     </List>
   );
 }
@@ -75,7 +93,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = {
-  getCommentsVideo
+  getCommentsVideo,
+  loadMoreCommentsVideo
 };
 
 export default connect(

@@ -17,7 +17,6 @@ export const selectVideoLoading = createSelector(
   Videos => Videos.loadingVideo
 );
 
-
 export const selectCommentsVideo = createSelector(
   [selectVideosState],
   Videos => Videos.commentsVideo
@@ -26,8 +25,8 @@ export const selectCommentsVideo = createSelector(
 export const selectCommentsVideoReduced = createSelector(
   [selectCommentsVideo],
   comments =>
-    comments.data
-      ? comments.data.items.map(item => item.snippet.topLevelComment.snippet)
+    comments.length > 0 && comments
+      ? comments.map(item => item.snippet.topLevelComment.snippet)
       : []
 );
 

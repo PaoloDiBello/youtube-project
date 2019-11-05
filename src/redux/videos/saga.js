@@ -37,7 +37,7 @@ export function* watchGetVideosStatistics() {
 }
 
 export function* doGetVideosStatistics({
-  payload: { videos, ids, nextPageToken }
+  payload: { videos, ids, nextPageToken, loadMore = false, related = false }
 }) {
   const response = yield call(VideosHelper.getVideosStatistics, ids);
 
@@ -47,10 +47,57 @@ export function* doGetVideosStatistics({
       ...video
     }));
 
+    if (!related) {
+      if (!loadMore) {
+        yield put({
+          type: actions.GET_VIDEOS_SUCCESS,
+          payload: videosWithStatistics,
+          nextPageToken
+        });
+      } else {
+        yield put({
+          type: actions.LOAD_MORE_VIDEOS_SUCCESS,
+          payload: videosWithStatistics,
+          nextPageToken
+        });
+      }
+    } else {
+      yield put({
+        type: actions.GET_RELATED_VIDEOS_SUCCESS,
+        payload: videosWithStatistics,
+        nextPageToken
+      });
+    }
+  }
+}
+
+export function* watchLoadMoreVideos() {
+  yield takeEvery(actions.LOAD_MORE_VIDEOS, doLoadMoreVideos);
+}
+
+export function* doLoadMoreVideos({ payload }) {
+  const response = yield call(VideosHelper.loadMoreVideos, payload);
+
+  if (!response.error && response) {
+    const { items, nextPageToken } = response;
+
+    const videoIds = items.map(item => item.id.videoId).join(",");
+    console.log("videoIds", videoIds);
+
+    const loadMore = !!nextPageToken;
+
     yield put({
-      type: actions.GET_VIDEOS_SUCCESS,
-      payload: videosWithStatistics,
-      nextPageToken
+      type: actions.GET_VIDEOS_STATISTICS,
+      payload: {
+        ids: videoIds,
+        videos: items,
+        nextPageToken,
+        loadMore
+      }
+    });
+  } else {
+    yield put({
+      type: actions.GET_VIDEOS_FAILED
     });
   }
 }
@@ -84,10 +131,12 @@ export function* watchGetCommentsVideo() {
 export function* doGetCommentsVideo({ payload }) {
   const response = yield call(VideosHelper.getCommentsVideo, payload);
 
-  if (!response.error) {
+  const { items, nextPageToken } = response;
+  if (!response.error && response) {
     yield put({
       type: actions.GET_COMMENTS_VIDEO_SUCCESS,
-      payload: response
+      payload: items,
+      nextPageToken
     });
   } else {
     yield put({
@@ -96,11 +145,63 @@ export function* doGetCommentsVideo({ payload }) {
   }
 }
 
+export function* watchLoadMoreCommentsVideo() {
+  yield takeEvery(actions.LOAD_MORE_COMMENTS_VIDEO, doLoadMoreCommentsVideo);
+}
+
+export function* doLoadMoreCommentsVideo({ payload }) {
+  const response = yield call(VideosHelper.loadMoreCommentsVideo, payload);
+  if (!response.error && response) {
+    const { items, nextPageToken } = response;
+    yield put({
+      type: actions.LOAD_MORE_COMMENTS_VIDEO_SUCCESS,
+      payload: items,
+      nextPageToken
+    });
+  } else {
+    yield put({
+      type: actions.LOAD_MORE_COMMENTS_VIDEO_FAILED
+    });
+  }
+}
+
+export function* watchGetRelatedVideos() {
+  yield takeEvery(actions.GET_RELATED_VIDEOS, doGetRelatedVideos);
+}
+
+export function* doGetRelatedVideos({ payload }) {
+  const response = yield call(VideosHelper.getRelatedVideos, payload);
+
+  if (!response.error && response) {
+    const { items, nextPageToken } = response;
+
+    const videoIds = items.map(item => item.id.videoId).join(",");
+    console.log("videoIds", videoIds);
+
+    yield put({
+      type: actions.GET_VIDEOS_STATISTICS,
+      payload: {
+        ids: videoIds,
+        videos: items,
+        nextPageToken,
+        related: true
+      }
+    });
+  } else {
+    yield put({
+      type: actions.GET_VIDEOS_FAILED
+    });
+  }
+}
+
 export default function* rootSaga() {
   yield all([
     fork(watchGetVideos),
     fork(watchGetVideosStatistics),
+    fork(watchLoadMoreVideos),
     fork(watchGetSingleVideo),
-    fork(watchGetCommentsVideo)
+    fork(watchGetCommentsVideo),
+    fork(watchLoadMoreCommentsVideo),
+    fork(watchGetRelatedVideos)
   ]);
 }

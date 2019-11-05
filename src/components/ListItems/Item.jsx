@@ -8,6 +8,7 @@ import MoreVertIcon from "@material-ui/icons/MoreVert";
 import moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 import { kFormatter } from "../../services/kFormatter";
+import { withRouter } from "react-router-dom";
 import clsx from "clsx";
 
 const useStyles = makeStyles(theme => ({
@@ -54,12 +55,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Item = ({ video, handleVideoSelect }) => {
+const Item = ({ video, history, sidebar = false }) => {
   const classes = useStyles();
   const theme = useTheme();
 
   const [hover, setHover] = useState(false);
   const date = moment(video.snippet.publishedAt, "YYYYMMDD").fromNow();
+
+  const handleVideoSelect = video => {
+    history.push(`/watch/${video.id.videoId}`);
+  };
 
   const handleHover = hover => {
     setHover(hover);
@@ -88,14 +93,14 @@ const Item = ({ video, handleVideoSelect }) => {
             className={classes.text}
           >
             {ReactHtmlParser(video.snippet.channelTitle)} •{" "}
-            {kFormatter(video.statistics.viewCount)} • {date}
+            {kFormatter(video.statistics.viewCount)} views • {date}
           </Typography>
           <Typography
             variant="subtitle1"
             color="primary"
             className={classes.text}
           >
-            {ReactHtmlParser(video.snippet.description)}
+            {!sidebar && ReactHtmlParser(video.snippet.description)}
           </Typography>
         </CardContent>
       </div>
@@ -112,4 +117,4 @@ const Item = ({ video, handleVideoSelect }) => {
   );
 };
 
-export default Item;
+export default withRouter(Item);

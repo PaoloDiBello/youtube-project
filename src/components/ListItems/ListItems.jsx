@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { getSearchParam } from "../../services/url";
 import InfiniteScroll from "react-infinite-scroller";
-import Spinner from "../Spinner";
 import { withRouter } from "react-router";
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
@@ -12,7 +11,7 @@ import { Divider, Button, CircularProgress } from "@material-ui/core";
 import NotFound from "../404";
 
 import videosActions from "../../redux/videos/actions";
-const { getVideos } = videosActions;
+const { getVideos, loadMoreVideos } = videosActions;
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -45,7 +44,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ListItems = ({ videos, location, getVideos, history }) => {
+const ListItems = ({
+  videos,
+  location,
+  getVideos,
+  loadMoreVideos,
+  history
+}) => {
   const classes = useStyles();
 
   console.log("videos", videos);
@@ -61,22 +66,12 @@ const ListItems = ({ videos, location, getVideos, history }) => {
   }, []);
 
   const loadMore = () => {
-    getVideos(query);
-  };
-
-  const handleVideoSelect = video => {
-    history.push(`/watch/${video.id.videoId}`);
+    loadMoreVideos(query);
   };
 
   if (videos.length > 0) {
     const renderedVideos = videos.map(video => {
-      return (
-        <Item
-          key={video.id.videoId}
-          video={video}
-          handleVideoSelect={() => handleVideoSelect(video)}
-        />
-      );
+      return <Item key={video.id.videoId} video={video} />;
       //eslint-disable-next-line
       console.log(video.id);
     });
@@ -109,7 +104,8 @@ const ListItems = ({ videos, location, getVideos, history }) => {
 };
 
 const mapDispatchToProps = {
-  getVideos
+  getVideos,
+  loadMoreVideos
 };
 
 const mapStateToProps = state => ({
