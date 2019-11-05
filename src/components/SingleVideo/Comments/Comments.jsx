@@ -29,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: "white"
+  },
+  loading: {
+    marginLeft: "25vw"
   }
 }));
 
@@ -72,7 +75,7 @@ function Comments({
           pageStart={0}
           loadMore={loadMore}
           hasMore={true || false}
-          loader={<CircularProgress />}
+          loader={<CircularProgress className={classes.loading} />}
         >
           {comments.map(comment => (
             <SingleComment comment={comment} />

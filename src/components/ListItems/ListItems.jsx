@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
   },
   divider: {
     backgroundColor: "#C8C7C4"
+  },
+  loading: {
+    marginLeft: "30vw"
   }
 }));
 
@@ -91,7 +94,7 @@ const ListItems = ({
             pageStart={0}
             loadMore={loadMore}
             hasMore={true || false}
-            loader={<CircularProgress />}
+            loader={<CircularProgress className={classes.loading} />}
           >
             {renderedVideos}
           </InfiniteScroll>
