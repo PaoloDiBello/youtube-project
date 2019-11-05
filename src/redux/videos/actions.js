@@ -29,11 +29,16 @@ const videosActions = {
     };
   },
 
-  getVideos: payload => {
+  getVideos: query => {
     return (dispatch, getState) => {
+      const nextPageToken = getState().Videos.nextPageToken;
+
       dispatch({
         type: videosActions.GET_VIDEOS,
-        payload
+        payload: {
+          query,
+          nextPageToken
+        }
       });
     };
   },

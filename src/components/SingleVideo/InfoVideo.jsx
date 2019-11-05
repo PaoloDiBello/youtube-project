@@ -81,6 +81,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
     alignContent: "flex-start",
     alignItems: "center",
+    fontWeight: "600",
     color: "#909090",
     "&>*": {
       padding: "2px"

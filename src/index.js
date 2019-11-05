@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Profiler } from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import { Provider } from "react-redux";
@@ -37,7 +37,18 @@ ReactDOM.render(
       <Router>
         <CssBaseline />
         <Header>
-          <App />
+          <Profiler
+            id="App"
+            onRender={(id, phase, actualDuration) => {
+              console.log({
+                id,
+                phase,
+                actualDuration
+              });
+            }}
+          >
+            <App />
+          </Profiler>
         </Header>
       </Router>
     </MuiThemeProvider>

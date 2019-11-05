@@ -5,21 +5,30 @@ import YoutubeFetch from "./youtubeFetch";
  * @typedef {class} VideosHelper
  */
 class VideosHelper {
-  getVideos = async payload => {
-    return await YoutubeFetch.get("/search", {
+  getVideos = async ({ query, nextPageToken }) => {
+    const paramsFetch = {
       params: {
-        q: encodeURI(payload).replace("/%20/g", "+"),
+        q: encodeURI(query).replace("/%20/g", "+"),
         regionCode: "US",
         type: "video"
       }
-    })
+    };
+
+    if (nextPageToken) {
+      paramsFetch.params.pageToken = nextPageToken;
+    }
+
+    return await YoutubeFetch.get("/search", paramsFetch)
       .then(response => {
         if (response.error) {
           return false;
         }
 
         if (response.data.items) {
-          return response.data.items;
+          return {
+            items: response.data.items,
+            nextPageToken: response.data.nextPageToken
+          };
         }
 
         return response;

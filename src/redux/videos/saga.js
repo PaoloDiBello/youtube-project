@@ -12,14 +12,17 @@ export function* doGetVideos({ payload }) {
   const response = yield call(VideosHelper.getVideos, payload);
 
   if (!response.error && response) {
-    const videoIds = response.map(item => item.id.videoId).join(",");
+    const { items, nextPageToken } = response;
+
+    const videoIds = items.map(item => item.id.videoId).join(",");
     console.log("videoIds", videoIds);
 
     yield put({
       type: actions.GET_VIDEOS_STATISTICS,
       payload: {
         ids: videoIds,
-        videos: response
+        videos: items,
+        nextPageToken
       }
     });
   } else {
@@ -33,7 +36,9 @@ export function* watchGetVideosStatistics() {
   yield takeEvery(actions.GET_VIDEOS_STATISTICS, doGetVideosStatistics);
 }
 
-export function* doGetVideosStatistics({ payload: { videos, ids } }) {
+export function* doGetVideosStatistics({
+  payload: { videos, ids, nextPageToken }
+}) {
   const response = yield call(VideosHelper.getVideosStatistics, ids);
 
   if (!response.error && response) {
@@ -44,7 +49,8 @@ export function* doGetVideosStatistics({ payload: { videos, ids } }) {
 
     yield put({
       type: actions.GET_VIDEOS_SUCCESS,
-      payload: videosWithStatistics
+      payload: videosWithStatistics,
+      nextPageToken
     });
   }
 }

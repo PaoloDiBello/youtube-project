@@ -36,6 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
   cover: {
     maxWidth: "20vw",
+    minWidth: "10vw",
     width: "100%",
     cursor: "pointer"
   },

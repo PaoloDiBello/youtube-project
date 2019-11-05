@@ -2,6 +2,7 @@ import videosActions from "./actions";
 
 const initState = {
   videos: [],
+  nextPageToken: null,
   video: {},
   relatedVideos: [],
   commentsVideo: {},
@@ -19,13 +20,15 @@ export default function videosReducer(state = initState, action) {
     case videosActions.GET_VIDEOS:
       return {
         ...state,
+        nextPageToken: null,
         loadingVideos: true
       };
 
     case videosActions.GET_VIDEOS_SUCCESS:
       return {
         ...state,
-        videos: action.payload,
+        videos: [...state.videos, ...action.payload],
+        nextPageToken: action.nextPageToken,
         loadingVideos: false
       };
 

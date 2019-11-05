@@ -3,10 +3,12 @@ import Item from "./Item";
 import { connect } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { getSearchParam } from "../../services/url";
+import InfiniteScroll from "react-infinite-scroller";
+import Spinner from "../Spinner";
 import { withRouter } from "react-router";
 import { ReactComponent as FilterIcon } from "../Layouts/img/filter.svg";
 import SvgIcon from "@material-ui/core/SvgIcon/SvgIcon";
-import { Divider, Button } from "@material-ui/core";
+import { Divider, Button, CircularProgress } from "@material-ui/core";
 import NotFound from "../404";
 
 import videosActions from "../../redux/videos/actions";
@@ -52,10 +54,15 @@ const ListItems = ({ videos, location, getVideos, history }) => {
     return getSearchParam(location, "search_query");
   };
 
+  const query = decodeURI(getSearchQuery());
+
   useEffect(() => {
-    const query = decodeURI(getSearchQuery());
     getVideos(query);
   }, []);
+
+  const loadMore = () => {
+    getVideos(query);
+  };
 
   const handleVideoSelect = video => {
     history.push(`/watch/${video.id.videoId}`);
@@ -85,7 +92,14 @@ const ListItems = ({ videos, location, getVideos, history }) => {
         <Button className={classes.filter}></Button>
         <div className={classes.listItems}>
           <Divider className={classes.divider} />
-          {renderedVideos}
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={loadMore}
+            hasMore={true || false}
+            loader={<CircularProgress />}
+          >
+            {renderedVideos}
+          </InfiniteScroll>
         </div>
       </div>
     );
